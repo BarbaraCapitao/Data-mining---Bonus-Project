@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 from minisom import MiniSom
 from sklearn.cluster import KMeans, AgglomerativeClustering
 import dash
@@ -522,4 +523,5 @@ def predict_cluster(n_clicks, product_count, first_order, last_order, total_spen
 
 # Run the Dash app
 if __name__ == '__main__':
-    app.run_server(debug=False, port = 8050)
+    port = int(os.environ.get("PORT", 8050))  # Get the PORT from environment variable
+    app.run_server(debug=False, host="0.0.0.0", port=port)  # Use 0.0.0.0 to allow external connections
