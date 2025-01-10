@@ -8,6 +8,17 @@ from dash.dependencies import Input, Output, State
 import plotly.express as px
 import plotly.graph_objects as go
 
+import seaborn as sns
+import plotly.colors as colors
+
+cmap = sns.cubehelix_palette(start=.5, rot=-.75, as_cmap=True)  #color palette used throughout the notebook
+fixed_color = cmap(0.5) #Selecting a color from the palette used throughout the notebook
+
+
+# Define the cubehelix color palette
+cubehelix_colors = sns.color_palette("cubehelix", 10).as_hex()  # Get 10 colors in hex format
+
+
 # Load your dataset
 df_clusters = pd.read_csv('customer_segmentation_clusters.csv')
 print("Dataset loaded successfully.")
@@ -136,13 +147,16 @@ app.layout = html.Div([
         ),
         
         # Bar chart for customer region distribution
-        dcc.Graph(id='region-bar-chart')
+        #dcc.Graph(id='region-bar-chart')
     ]),
     
     # Visualization Tools Section
     html.Div([
         html.H2(id="visualization-title", children="Visualization Tools"),
         
+        # Bar chart for customer region distribution
+        dcc.Graph(id='region-bar-chart'),
+
         # Heatmap for demographics
         dcc.Graph(id='demographics-heatmap'),
         
@@ -175,6 +189,9 @@ app.layout = html.Div([
     html.Div([
         html.H2(id="prediction-title", children="Cluster Prediction"),
         
+        # Note about input values for proportions
+        html.Div(children="Note: Input values for proportions need to be between 0 and 1.", style={'color': 'red', 'font-weight': 'bold', 'margin-bottom': '10px'}),
+        
         # Input fields for prediction
         html.Div([
             html.Div([
@@ -199,59 +216,59 @@ app.layout = html.Div([
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("Morning Orders Proportion"),
-                dcc.Input(id='morning-orders-proportion-input', type='number', value=0)
+                dcc.Input(id='morning-orders-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("Lunch Orders Proportion"),
-                dcc.Input(id='lunch-orders-proportion-input', type='number', value=0)
+                dcc.Input(id='lunch-orders-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("Afternoon Orders Proportion"),
-                dcc.Input(id='afternoon-orders-proportion-input', type='number', value=0)
+                dcc.Input(id='afternoon-orders-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("Dinner Orders Proportion"),
-                dcc.Input(id='dinner-orders-proportion-input', type='number', value=0)
+                dcc.Input(id='dinner-orders-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("Night Orders Proportion"),
-                dcc.Input(id='night-orders-proportion-input', type='number', value=0)
+                dcc.Input(id='night-orders-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("Is Chain Proportion"),
-                dcc.Input(id='is-chain-proportion-input', type='number', value=0)
+                dcc.Input(id='is-chain-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("CUI American Proportion"),
-                dcc.Input(id='CUI-American-proportion-input', type='number', value=0)
+                dcc.Input(id='CUI-American-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("CUI Beverages Proportion"),
-                dcc.Input(id='CUI-Beverages-proportion-input', type='number', value=0)
+                dcc.Input(id='CUI-Beverages-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("CUI Chicken Dishes Proportion"),
-                dcc.Input(id='CUI-Chicken-Dishes-proportion-input', type='number', value=0)
+                dcc.Input(id='CUI-Chicken-Dishes-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("CUI Healthy Proportion"),
-                dcc.Input(id='CUI-Healthy-proportion-input', type='number', value=0)
+                dcc.Input(id='CUI-Healthy-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("CUI Italian Proportion"),
-                dcc.Input(id='CUI-Italian-proportion-input', type='number', value=0)
+                dcc.Input(id='CUI-Italian-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("CUI OTHER Proportion"),
-                dcc.Input(id='CUI-OTHER-proportion-input', type='number', value=0)
+                dcc.Input(id='CUI-OTHER-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("CUI Street Food / Snacks Proportion"),
-                dcc.Input(id='CUI-Street-Food-Snacks-proportion-input', type='number', value=0)
+                dcc.Input(id='CUI-Street-Food-Snacks-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
             html.Div([
                 html.Label("CUI Asian Total Proportion"),
-                dcc.Input(id='CUI-Asian-Total-proportion-input', type='number', value=0)
+                dcc.Input(id='CUI-Asian-Total-proportion-input', type='number', value=0, min=0, max=1)
             ], style={'display': 'inline-block', 'width': '48%', 'padding': '10px'}),
         ], style={'columnCount': 2}),
         
@@ -260,8 +277,9 @@ app.layout = html.Div([
         
         # Result text output
         html.Div(id='prediction-result', children="Cluster Prediction Result: ")
-    ])
 ])
+    ])
+
 
 # Define the callback to update the bar chart
 @app.callback(
@@ -288,9 +306,18 @@ def update_bar_chart(selected_cluster, age_range, theme):
     # Create the bar chart for customer_region
     region_counts = filtered_df['customer_region'].value_counts().reset_index()
     region_counts.columns = ['customer_region', 'count']
-    fig = px.bar(region_counts, x='customer_region', y='count', color='customer_region', title='Distribution of Customer Region', labels={'customer_region': 'Customer Region', 'count': 'Count'})
+    fig = px.bar(
+        region_counts, 
+        x='customer_region', 
+        y='count', 
+        color='customer_region', 
+        title='Distribution of Customer Region', 
+        labels={'customer_region': 'Customer Region', 'count': 'Count'},
+        color_discrete_sequence=cubehelix_colors  # Apply cubehelix palette
+    )
     fig.update_layout(dark_mode_layout if theme == 'dark' else light_mode_layout)
     return fig
+
 
 # Define the callback to update the visualizations
 @app.callback(
@@ -338,7 +365,8 @@ def update_visualizations(selected_cluster, age_range, theme):
         x='customer_region', 
         y='customer_age', 
         title='Heatmap of Customer Region vs Age',
-        labels={'customer_region': 'Customer Region', 'customer_age': 'Customer Age'}
+        labels={'customer_region': 'Customer Region', 'customer_age': 'Customer Age'} #,
+        #color_continuous_scale=px.colors.sequential.Cubehelix  # Apply cubehelix palettedem
     )
     demographics_heatmap.update_layout(dark_mode_layout if theme == 'dark' else light_mode_layout)
     
@@ -353,6 +381,8 @@ def update_visualizations(selected_cluster, age_range, theme):
         path=['Cuisine'], 
         values='Count', 
         title='Preferred Cuisines'
+        #,
+        #color_discrete_sequence=px.colors.sequential.Cubehelix[:len(cuisines_data)]  # Sample discrete colors
     )
     cuisines_tree_map.update_layout(dark_mode_layout if theme == 'dark' else light_mode_layout)
 
@@ -362,7 +392,8 @@ def update_visualizations(selected_cluster, age_range, theme):
         x='first_order', 
         y='total_orders', 
         title='Order Trends Over Time',
-        labels={'first_order': 'First Order Time', 'total_orders': 'Total Orders'}
+        labels={'first_order': 'First Order Time', 'total_orders': 'Total Orders'},
+        color_discrete_sequence=[cubehelix_colors[2]]  # Apply cubehelix palette
     )
     order_trend_line_chart.update_layout(dark_mode_layout if theme == 'dark' else light_mode_layout)
 
@@ -372,7 +403,8 @@ def update_visualizations(selected_cluster, age_range, theme):
         x='final_cluster', 
         y='total_spent', 
         title='Customer Spending Across Clusters',
-        labels={'final_cluster': 'Cluster', 'total_spent': 'Total Spent'}
+        labels={'final_cluster': 'Cluster', 'total_spent': 'Total Spent'},
+        color_discrete_sequence=[cubehelix_colors[2]]  # Apply cubehelix palette
     )
     spending_box_plot.update_layout(dark_mode_layout if theme == 'dark' else light_mode_layout)
 
@@ -381,7 +413,8 @@ def update_visualizations(selected_cluster, age_range, theme):
         filtered_df, 
         x='total_orders', 
         title='Order Frequency Distribution',
-        labels={'total_orders': 'Total Orders'}
+        labels={'total_orders': 'Total Orders'},
+        color_discrete_sequence=[cubehelix_colors[2]]  # Apply cubehelix palette
     )
     order_frequency_histogram.update_layout(dark_mode_layout if theme == 'dark' else light_mode_layout)
 
@@ -389,7 +422,8 @@ def update_visualizations(selected_cluster, age_range, theme):
     payment_method_pie_chart = px.pie(
         filtered_df, 
         names='payment_method', 
-        title='Payment Method Distribution'
+        title='Payment Method Distribution',
+        color_discrete_sequence=cubehelix_colors  # Apply cubehelix palette
     )
     payment_method_pie_chart.update_layout(dark_mode_layout if theme == 'dark' else light_mode_layout)
 
@@ -399,7 +433,8 @@ def update_visualizations(selected_cluster, age_range, theme):
         x='customer_age', 
         y='total_spent', 
         title='Customer Spending vs Age',
-        labels={'customer_age': 'Customer Age', 'total_spent': 'Total Spent'}
+        labels={'customer_age': 'Customer Age', 'total_spent': 'Total Spent'},
+        color_discrete_sequence=[cubehelix_colors[2]]  # Apply cubehelix palette
     )
     spending_age_scatter_plot.update_layout(dark_mode_layout if theme == 'dark' else light_mode_layout)
 
@@ -410,6 +445,8 @@ def update_visualizations(selected_cluster, age_range, theme):
         y='final_cluster', 
         title='Heatmap of Active Days Across Clusters',
         labels={'active_days': 'Active Days', 'final_cluster': 'Cluster'}
+        #,
+        #color_continuous_scale=px.colors.sequential.Cubehelix  # Apply cubehelix palette
     )
     active_days_heatmap.update_layout(dark_mode_layout if theme == 'dark' else light_mode_layout)
 
@@ -419,7 +456,9 @@ def update_visualizations(selected_cluster, age_range, theme):
         x='final_cluster', 
         y='had_promotion', 
         title='Promotion Impact Across Clusters',
-        labels={'final_cluster': 'Cluster', 'had_promotion': 'Had Promotion'}
+        labels={'final_cluster': 'Cluster', 'had_promotion': 'Had Promotion'},
+        color_discrete_sequence=[cubehelix_colors[2]]  # Apply cubehelix palette
+
     )
     promotion_impact_bar_chart.update_layout(dark_mode_layout if theme == 'dark' else light_mode_layout)
     
@@ -484,6 +523,3 @@ def predict_cluster(n_clicks, product_count, first_order, last_order, total_spen
 # Run the Dash app
 if __name__ == '__main__':
     app.run_server(debug=False, port = 8050)
-
-
-
