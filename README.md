@@ -28,11 +28,15 @@ The needed packages are in the requirements file. Use "pip install -r requiremen
 # 2. File Information <a name="file-information"></a>
 ## Files
 
->**App.py** <br>
+- **App.py** <br>
 File with the needed code to create and run the app.
 
 - **README.md** <br>
 Current file. Has instructions and explanations on the repository and its files.
+
+- **customer_segmenation_clusters.csv** <br>
+File with the data regarding the clusters.
+
 - **requirements.txt** <br>
 Needed packages to be able to run everything smoothly.
 In order to run it, use, in the terminal, "pip install -r requirements.txt"
